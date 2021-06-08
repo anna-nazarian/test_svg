@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import View360 from "./View360";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <View360 />
   </React.StrictMode>,
   document.getElementById('root')
 );

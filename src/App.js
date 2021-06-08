@@ -2,6 +2,9 @@ import React from "react";
 import {SVG} from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
 
+import Tridi from 'react-tridi';
+import 'react-tridi/dist/index.css';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
