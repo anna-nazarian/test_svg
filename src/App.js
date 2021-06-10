@@ -38,8 +38,15 @@ class App extends React.Component {
 
     this.room = draw
         .rect(roomSize.width, roomSize.height)
-        .fill(`#F7F5F4`)
-        .css({ position: `relative` });
+        .fill(`#F7F5F4`);
+
+    var floorPattern = draw.pattern(2500, 2000, function(add) {
+      add.rect(2500, 2000).fill(`floor.jpeg`).transform({scale: 10})
+    });
+    this.floorTexture = draw
+        .rect(roomSize.width - 100, roomSize.height - 100)
+        .move(50, 50)
+        .fill(floorPattern);
 
     this.door = draw
         .line(0, 0, doorWidth, 0)
@@ -66,6 +73,7 @@ class App extends React.Component {
     this.roomContent.add(this.room);
 
     this.floor = draw.group();
+    this.roomContent.add(this.floorTexture);
     this.roomContent.add(this.floor);
 
     this.roomContent.add(this.door);
