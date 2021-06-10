@@ -7,10 +7,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.defaults = {
-      containerSize: {
-        width: 500,
-        height: 500
-      },
       settings: {
         roomSize: {
           width: 5000,
@@ -23,9 +19,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.containerSize = {
+      width: this.container.clientWidth - 50,
+      height: this.container.clientWidth - 50
+    }
     this.draw = SVG()
         .addTo(this.container)
-        .size(this.container.clientWidth - 50, this.container.clientWidth - 50)
+        .size(this.containerSize.width, this.containerSize.height)
         .on("drop", this.dropImg);
 
     const draw = this.draw;
@@ -84,9 +84,10 @@ class App extends React.Component {
     this.roomContent = draw.group();
     this.roomContent.add(this.room);
 
-    this.floor = draw.group();
     this.roomContent.add(this.floorTexture);
-    this.roomContent.add(this.floor);
+
+    /*this.floor = draw.group();
+    this.roomContent.add(this.floor);*/
 
     this.roomContent.add(this.door);
 
@@ -98,8 +99,8 @@ class App extends React.Component {
   }
 
   recalculateScale = () => {
-    const scaleWidth = this.defaults.containerSize.width / this.room.width();
-    const scaleHeight = this.defaults.containerSize.height / this.room.height();
+    const scaleWidth = this.containerSize.width / this.room.width();
+    const scaleHeight = this.containerSize.height / this.room.height();
     const scale = Math.min(scaleWidth, scaleHeight);
     this.roomContent.transform({ scale, origin: { x: 0, y: 0 } });
   };
