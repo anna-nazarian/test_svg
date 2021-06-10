@@ -36,6 +36,17 @@ class App extends React.Component {
       height: draw.text(roomSize.height.toString()).move(510, 50)
     };*/
 
+    /*
+    * builder (svg root)
+    * room
+    * walls (walls style)
+    * floor (floor style, carpet)
+    * doors and windows (captions while move)
+    * furniture (diff levels)
+    * ceiling light
+    * captions (width, length, move)
+    * */
+
     this.room = draw
         .rect(roomSize.width, roomSize.height)
         .fill(`#F7F5F4`);
@@ -67,7 +78,8 @@ class App extends React.Component {
         .size(1300, 1300)
         .move(250, 250)
         .draggable()
-        .css({ cursor: "pointer" });
+        .css({ cursor: "pointer" })
+        .data('level', 2);
 
     this.roomContent = draw.group();
     this.roomContent.add(this.room);
@@ -132,27 +144,41 @@ class App extends React.Component {
     this.roomContent.add(image);
   };
 
+  addFurnitureItem = (pic, size, level) => {
+    const item = this.draw.image(pic)
+            .size(...size)
+            .move(1000, 1000)
+            .css({cursor: "pointer"})
+            .data('level', level)
+            .draggable(),
+        elementAbove = Array.from(this.furniture.children()).find(item => item.data('level') > level)
+    elementAbove
+        ? elementAbove.before(item)
+        : this.furniture.add(item);
+  }
+
   addTable = (e) => {
     e.preventDefault();
-    var image = this.draw.image("table.png");
-    image
-        .size(1000, 1000)
-        .move(1200, 800)
-        .css({ cursor: "pointer", zIndex: 10 })
-        .draggable();
-    this.furniture.add(image);
+    this.addFurnitureItem("table.png", [1000, 1000], 10);
   };
+
+  addChair = (e) => {
+    e.preventDefault();
+    this.addFurnitureItem("chair.png", [1000, 1000], 5);
+  };
+
   addCarpet = (e) => {
     e.preventDefault();
-    var image = this.draw.image("carpet.png");
-
+    this.addFurnitureItem('carpet.png', [2500, 2500], 1);
+    /*var image = this.draw.image("carpet.png");
     image
         .size(2500, 2500)
         .move(`10%`, `10%`)
         .css({ cursor: "pointer" })
         .draggable();
-    this.floor.add(image);
+    this.floor.add(image);*/
   };
+
 
   render() {
     const { roomSize, doorWidth } = this.defaults.settings;
@@ -188,6 +214,10 @@ class App extends React.Component {
               <div className={`furniture-item`}>
                 <img src={`table.png`} />
                 <button onClick={this.addTable}>Add</button>
+              </div>
+              <div className={`furniture-item`}>
+                <img src={`chair.png`} />
+                <button onClick={this.addChair}>Add</button>
               </div>
               <div className={`furniture-item`}>
                 <img src={`carpet.png`} />
