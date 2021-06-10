@@ -13,7 +13,8 @@ class App extends React.Component {
           height: 5000
         },
         doorWidth: 700
-      }
+      },
+      wallsWidth: 100
     };
     this.state = {};
   }
@@ -55,7 +56,7 @@ class App extends React.Component {
       add.rect(2500, 2000).fill(`floor.jpeg`).transform({scale: 10})
     });
     this.floorTexture = draw
-        .rect(roomSize.width - 100, roomSize.height - 100)
+        .rect(roomSize.width - this.defaults.wallsWidth, roomSize.height - this.defaults.wallsWidth)
         .move(50, 50)
         .fill(floorPattern);
 
@@ -110,6 +111,7 @@ class App extends React.Component {
     const width = parseInt(e.target.value);
     //this.roomSize.width.text(width.toString());
     this.room.width(width);
+    this.floorTexture.width(width - this.defaults.wallsWidth);
     this.recalculateScale();
   };
   changeRoomHeight = (e) => {
@@ -117,6 +119,7 @@ class App extends React.Component {
     const height = e.target.value;
     //this.roomSize.height.text(height.toString());
     this.room.height(height);
+    this.floorTexture.height(height - this.defaults.wallsWidth);
     this.recalculateScale();
   };
 
